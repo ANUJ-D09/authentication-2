@@ -1,0 +1,12 @@
+{
+  "name": "authpart2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/ANUJ-D09/authentication-2.git",
+  "author": "anujda09 <anujdamani9@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
