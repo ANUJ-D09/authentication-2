@@ -47,7 +47,8 @@ app.post('/signin', function(req, res) {
         res.status(401).json({ message: "Invalid username or password" });
     }
 });
-app.get('/me', function(req, res) {
+
+function auth(req, res, next) {
     const token = req.headers['token'];
 
     if (!token) {
@@ -56,19 +57,24 @@ app.get('/me', function(req, res) {
 
     try {
         const decoded = jwt.verify(token, JWT_SECRET);
-        const username = decoded.username;
-
-        const founduser = users.find(user => user.userName === username);
-        if (founduser) {
-            res.json({
-                username: founduser.userName,
-                password: founduser.passWord
-            });
-        } else {
-            res.status(404).json({ message: "User not found" });
-        }
+        req.user = decoded;
+        next();
     } catch (err) {
-        res.status(401).json({ message: "Invalid or expired token" });
+        return res.status(401).json({ message: "Invalid or expired token" });
+    }
+}
+
+app.get('/me', auth, function(req, res) {
+    const username = req.user.username;
+
+    const foundUser = users.find(user => user.userName === username);
+    if (foundUser) {
+        res.json({
+            username: foundUser.userName,
+            password: foundUser.passWord
+        });
+    } else {
+        res.status(404).json({ message: "User not found" });
     }
 });
 
