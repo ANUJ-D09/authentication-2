@@ -3,16 +3,20 @@ const app = express();
 const port = 3069;
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = "Kalyanrayvijayte";
+const cors = require('cors');
+app.use(cors());
 
 app.use(express.json());
 
 const users = [];
 
-
+app.use(cors({
+    origin: '*' // or '*' for all origins (not recommended for production)
+}));
 
 app.post('/signup', function(req, res) {
     const userName = req.body.username;
-    const passWord = req.body.passWord;
+    const passWord = req.body.password;
 
     users.push({
         userName: userName,
@@ -25,7 +29,7 @@ app.post('/signup', function(req, res) {
 
 app.post('/signin', function(req, res) {
     const userName = req.body.username;
-    const passWord = req.body.passWord;
+    const passWord = req.body.password;
 
     let founduser = null;
 

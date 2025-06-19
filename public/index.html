@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth file</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.7/axios.min.js"></script>
+</head>
+
+<body>
+    <section class="signup">
+        <h1>Signup</h1>
+        <input id="signup_username" type="text" name="username" placeholder="Username" />
+        <input id="signup_password" type="password" name="password" placeholder="Password" />
+        <button onclick="signup()">Sign up</button>
+    </section>
+
+    <section class="signin">
+        <h1>Signin</h1>
+        <input id="signin_username" type="text" name="username" placeholder="Username" />
+        <input id="signin_password" type="password" name="password" placeholder="Password" />
+        <button onclick="signin()">Sign in</button>
+    </section>
+
+    <section class="userinfo">
+        <h1>User Info</h1>
+        <div id="information"></div>
+    </section>
+
+    <div>
+        <button onclick="logout()">Logout</button>
+    </div>
+
+    <script>
+        async function signup() {
+            try {
+                const username = document.getElementById("signup_username").value;
+                const password = document.getElementById("signup_password").value;
+
+                await axios.post("http://localhost:3069/signup", {
+                    username: username,
+                    password: password
+                });
+
+                alert("Signed up successfully!");
+            } catch (error) {
+                console.error(error);
+                alert("Signup failed");
+            }
+        }
+    </script>
+</body>
+
+</html>
