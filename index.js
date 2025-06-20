@@ -3,16 +3,13 @@ const app = express();
 const port = 3069;
 const jwt = require('jsonwebtoken')
 const JWT_SECRET = "Kalyanrayvijayte";
-const cors = require('cors');
-app.use(cors());
+const path = require('path');
 
 app.use(express.json());
 
 const users = [];
 
-app.use(cors({
-    origin: '*' // or '*' for all origins (not recommended for production)
-}));
+
 
 app.post('/signup', function(req, res) {
     const userName = req.body.username;
@@ -50,6 +47,12 @@ app.post('/signin', function(req, res) {
     } else {
         res.status(401).json({ message: "Invalid username or password" });
     }
+});
+
+
+
+app.get("/", (req, res) => {
+    res.sendFile("/Users/anujdamani/Desktop/100xdevs/authpart2/public/index.html");
 });
 
 function auth(req, res, next) {

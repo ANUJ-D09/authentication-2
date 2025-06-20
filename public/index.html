@@ -41,7 +41,7 @@
 
                 await axios.post("http://localhost:3069/signup", {
                     username: username,
-                    password: password
+                    passWord: password // Fix: key must match server-side 'passWord'
                 });
 
                 alert("Signed up successfully!");
@@ -49,6 +49,46 @@
                 console.error(error);
                 alert("Signup failed");
             }
+        }
+
+        async function signin() {
+            try {
+                const username = document.getElementById("signin_username").value;
+                const password = document.getElementById("signin_password").value;
+
+                const response = await axios.post("http://localhost:3069/signin", {
+                    username: username,
+                    passWord: password // Fix: match backend key name exactly
+                });
+
+                alert("Signed in successfully!");
+                localStorage.setItem("token", response.data.token); // Fix: save token
+                getuserinfo();
+
+            } catch (error) {
+                console.error(error);
+                alert("Signin failed");
+            }
+        }
+
+        async function getuserinfo() {
+            const token = localStorage.getItem("token");
+            try {
+                const response = await axios.get("http://localhost:3069/me", {
+                    headers: {
+                        token: token
+                    }
+                });
+                document.getElementById("information").innerHTML = `Username: ${response.data.username}`;
+            } catch (error) {
+                console.error(error);
+                document.getElementById("information").innerHTML = "Error loading user info";
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem("token");
+            document.getElementById("information").innerHTML = "Logged out";
         }
     </script>
 </body>
